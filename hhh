@@ -1,0 +1,154 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/abdulhaman/Linux-/refs/heads/main/mmmmmmmm"))()
+if not library then
+    -- fallback for local testing
+    library = loadfile("main.lua")()
+end
+
+-- ==============================================
+-- 1. Testing Backward Compatibility (Old API)
+-- ==============================================
+local oldWindow = library:init("Legacy Titlebar", true, Enum.KeyCode.RightShift, true)
+
+oldWindow:Divider("I'm a divider!")
+
+local sectionA = oldWindow:Section("Old Elements Tab")
+
+sectionA:Divider("I'm another divider!")
+
+sectionA:Button("Click me!", function() 
+    print("Button clicked in Old API.")
+end)
+
+sectionA:Label("Lorem ipsum dolor sit amet.")
+
+sectionA:Switch("Switch me!", false, function(a) 
+    print("Switch:", a) 
+end)
+
+sectionA:TextField("Enter text here!", "Enter text here...", function(a)
+    print("Text:", a) 
+end)
+
+oldWindow:Divider("Just dividin'")
+
+local sectionB = oldWindow:Section("Old Notifications")
+
+sectionB:Divider("Dividers are cool!")
+
+sectionB:Button("Temporary Notification", function() 
+    oldWindow:TempNotify("Be careful!", "We are going to beat you up.", "rbxassetid://12608259004") 
+end)
+
+sectionB:Button("Notification 1", function() 
+    oldWindow:Notify("Hello!", "I am notification", "Button1", "rbxassetid://12608259004", 
+    function() 
+        print("Notif1 confirmed") 
+    end) 
+end)
+
+sectionB:Button("Notification 2", function() 
+    oldWindow:Notify2("Hello!", "I am notification", "Button 1", "Button 2", "rbxassetid://12608259004",
+    function() print("Choice 1") end,
+    function() print("Choice 2") end)
+end)
+
+oldWindow:GreenButton(function() 
+    print("You clicked the green button in old API!")
+end)
+
+sectionA:Select()
+
+-- ==============================================
+-- 2. Testing Modern macOS API
+-- ==============================================
+local Window = library:MakeWindow({
+    Title = "Karpiware 6.1.0",
+    SubTitle = "Build - Paid (Stable) | Universal"
+})
+
+Window:AddMinimizeButton({
+    Button = { Image = "rbxassetid://71014873973869", BackgroundTransparency = 0 },
+    Corner = { CornerRadius = UDim.new(0.5, 0) },
+})
+
+local Tab1 = Window:MakeTab({"Ragebot", "icon_here"})
+
+Tab1:AddDiscordInvite({
+    Name = "Ragebot Hub",
+    Description = "Join server for configs",
+    Logo = "rbxassetid://18751483361",
+    Invite = "https://discord.gg/example",
+})
+
+Window:SelectTab(Tab1)
+
+local Section1 = Tab1:AddSection({"Main Settings"})
+
+Section1:AddToggle({
+    Name = "Master switch",
+    Default = true,
+    Callback = function(v)
+        print("Master switch:", v)
+    end
+})
+
+Section1:AddToggle({
+    Name = "Silent aim",
+    Default = false,
+    Callback = function(v) end
+})
+
+Section1:AddSlider({
+    Name = "Field of view",
+    Min = 0,
+    Max = 360,
+    Increase = 1,
+    Default = 180,
+    Callback = function(Value)
+        print("FOV:", Value)
+    end
+})
+
+local Section2 = Tab1:AddSection({"Extra Features"})
+
+Section2:AddSlider({
+    Name = "Minimum damage",
+    Min = 0,
+    Max = 100,
+    Increase = 1,
+    Default = 39,
+    Callback = function(Value) end
+})
+
+Section2:AddDropdown({
+    Name = "Hitboxes...",
+    Options = {"Head", "Torso", "Arms", "Legs", "All"},
+    Default = "Head",
+    Callback = function(Value)
+        print("Hitbox selected:", Value)
+    end
+})
+
+Section2:AddTextBox({
+    Name = "Force conditions",
+    PlaceholderText = "Enter conditions...",
+    Callback = function(Value)
+        print("Conditions:", Value)
+    end
+})
+
+Section2:AddParagraph({
+    Name = "Note",
+    Text = "This is a sleek premium typography test."
+})
+
+Section2:AddButton({"Open Dialog", function()
+    Window:Dialog({
+        Title = "Danger",
+        Text = "Are you sure you want to proceed?",
+        Options = {
+            {"Confirm", function() print("Confirmed!") end},
+            {"Cancel", function() print("Canceled!") end}
+        }
+    })
+end})
